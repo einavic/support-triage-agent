@@ -1,0 +1,38 @@
+[
+  {
+    "id": "kb-001",
+    "title": "Shipping times",
+    "tags": ["shipping", "delivery", "order"],
+    "content": "Standard shipping takes 3-5 business days within the country. Express shipping (paid) takes 1-2 business days. International orders take 7-14 business days depending on customs."
+  },
+  {
+    "id": "kb-002",
+    "title": "Return policy",
+    "tags": ["returns", "refund"],
+    "content": "Items can be returned within 30 days of delivery if unused and in original packaging. Refunds are issued to the original payment method within 5-7 business days after we receive the returned item. Sale items are final sale and cannot be returned."
+  },
+  {
+    "id": "kb-003",
+    "title": "Warranty coverage",
+    "tags": ["warranty", "defect", "broken"],
+    "content": "All Wonderful Gadgets products include a 1-year manufacturer warranty covering defects in materials and workmanship. Accidental damage and water damage are not covered. Warranty claims require a proof of purchase."
+  },
+  {
+    "id": "kb-004",
+    "title": "Tracking an order",
+    "tags": ["tracking", "order", "shipping"],
+    "content": "Once an order ships, a tracking link is emailed to the address on the account. Tracking can take up to 24 hours to activate after the shipping confirmation email."
+  },
+  {
+    "id": "kb-005",
+    "title": "Changing or cancelling an order",
+    "tags": ["cancel", "change", "order"],
+    "content": "Orders can be changed or cancelled within 1 hour of placing them by contacting support. After that window, the order has usually entered fulfillment and cannot be changed; a return can be requested once it arrives instead."
+  },
+  {
+    "id": "kb-006",
+    "title": "Account and password help",
+    "tags": ["account", "password", "login"],
+    "content": "Passwords can be reset from the login page using the 'Forgot password' link. If the account email is no longer accessible, this must be handled by a support agent, not self-service."
+  }
+]

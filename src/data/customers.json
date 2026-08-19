@@ -1,0 +1,28 @@
+[
+  {
+    "id": "cust-1001",
+    "email": "dana.levy@example.com",
+    "name": "Dana Levy",
+    "orders": [
+      { "id": "ord-5001", "product": "Wonderful Gadget Mini", "status": "shipped", "purchaseDate": "2026-07-01" },
+      { "id": "ord-5002", "product": "Wonderful Gadget Pro", "status": "delivered", "purchaseDate": "2026-06-10" }
+    ]
+  },
+  {
+    "id": "cust-1002",
+    "email": "omer.cohen@example.com",
+    "name": "Omer Cohen",
+    "orders": [
+      { "id": "ord-5003", "product": "Wonderful Gadget Pro", "status": "processing", "purchaseDate": "2026-07-14" }
+    ]
+  },
+  {
+    "id": "cust-1003",
+    "email": "maya.ben@example.com",
+    "name": "Maya Ben",
+    "orders": [
+      { "id": "ord-5004", "product": "Wonderful Gadget Mini", "status": "returned", "purchaseDate": "2026-05-20" },
+      { "id": "ord-5005", "product": "Wonderful Gadget Charger", "status": "delivered", "purchaseDate": "2026-06-28" }
+    ]
+  }
+]
