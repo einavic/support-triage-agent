@@ -41,6 +41,7 @@ The escalation path is a small multi-agent handoff rather than a plain function 
    - `ANTHROPIC_API_KEY` - from console.anthropic.com
    - `SLACK_WEBHOOK_URL` - create a free Incoming Webhook at api.slack.com/messaging/webhooks (takes ~5 min)
 3. `npm run dev` for the interactive CLI, or `npm run scenarios` to run scripted conversations that exercise each path (knowledge base answer, account lookup, angry customer, out-of-policy refund, damage not covered by the quality guarantee, cancellation, skin reaction return).
+4. `npm test` runs the offline unit tests (no API keys needed; Slack calls are mocked).
 
 Requires Node 18+ (20+ recommended, for JSON import attributes).
 

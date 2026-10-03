@@ -7,7 +7,8 @@
     "start": "tsx src/index.ts",
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "scenarios": "tsx scenarios/scenarios.ts"
+    "scenarios": "tsx scenarios/scenarios.ts",
+    "test": "tsx --test tests/*.test.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.32.0",
