@@ -10,7 +10,10 @@ A customer sends a message. The agent decides, turn by turn, how to help:
 - looks up the customer's real order/account data via `lookup_account`
 - hands off to a dedicated escalation agent when it's not confident, the request needs authority it doesn't have (e.g. approving a refund exception), or the customer is upset
 
-Every tool call, model response, and final reply is logged to `logs/<conversationId>.jsonl`, so a full decision trail is inspectable after the fact — not just the final answer, but every step that led to it.
+Every customer message, tool call, model response, and final reply is logged, so a full decision trail is inspectable after the fact — not just the final answer, but every step that led to it. Each conversation gets two files in `logs/`, named after the local date and time it started (e.g. `2026-10-03_16-25-41`):
+
+- `.log` — a readable transcript (customer, agent tool calls with token counts, tool results, escalations, reply)
+- `.jsonl` — the full raw events, one JSON object per line, for deep debugging
 
 ## Architecture
 

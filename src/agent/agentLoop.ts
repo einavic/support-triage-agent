@@ -36,7 +36,7 @@ async function callClaudeWithRetry(history: Anthropic.MessageParam[]): Promise<A
       return await anthropic.messages.create({
         model: MODEL,
         max_tokens: 1024,
-        system: systemPrompt,
+        system: `${systemPrompt}\n\nToday's date is ${new Date().toISOString().slice(0, 10)}.`,
         tools: toolDefinitions,
         messages: history
       });
