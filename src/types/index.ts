@@ -43,11 +43,6 @@ export interface HandOffToEscalationAgentInput {
 export interface LogEntry {
   timestamp: string;
   conversationId: string;
-  type: "user_message" | "tool_call" | "tool_result" | "agent_response" | "escalation" | "error";
+  type: "user_message" | "tool_result" | "agent_response" | "escalation" | "error";
   payload: unknown;
-}
-
-export interface ConversationTurnResult {
-  reply: string;
-  escalated: boolean;
 }

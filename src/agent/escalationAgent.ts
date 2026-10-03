@@ -7,10 +7,10 @@ const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const MODEL = "claude-sonnet-5";
 
 const escalationSystemPrompt = `
-You are an escalation specialist for Wonderful Gadgets customer support.
+You are an escalation specialist for LookinGood's customer support.
 
 You receive a reason and context handed off to you by the main support agent, describing a conversation that needs human attention. Your job:
-1. Decide the urgency: "low", "medium", or "high".
+1. Decide the urgency: "low", "medium", or "high". Health or safety issues (e.g. a severe skin reaction) are always "high".
 2. Write a clear, human-readable summary for the human support agent who will pick this up.
 3. Call escalate_to_human with your reason, summary, and urgency.
 
@@ -31,7 +31,8 @@ const escalationTool: Anthropic.Tool = {
   }
 };
 
-export async function runEscalationAgent(conversationId: string, input: HandOffToEscalationAgentInput): Promise<unknown> {  const response = await anthropic.messages.create({
+export async function runEscalationAgent(conversationId: string, input: HandOffToEscalationAgentInput): Promise<unknown> {
+  const response = await anthropic.messages.create({
     model: MODEL,
     max_tokens: 512,
     system: escalationSystemPrompt,

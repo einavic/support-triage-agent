@@ -1,6 +1,6 @@
 # Support Triage Agent
 
-An agentic customer support assistant for a fictional company ("Wonderful Gadgets"), built to practice the core skills of a Forward Deployed Engineer: a Claude tool-calling loop, integration with a real external system (Slack), and a decision trail suitable for debugging in production.
+An agentic customer support assistant for a fictional company ("LookinGood", a cosmetics brand), built to practice the core skills of a Forward Deployed Engineer: a Claude tool-calling loop, integration with a real external system (Slack), and a decision trail suitable for debugging in production.
 
 ## What it does
 
@@ -32,7 +32,7 @@ User message
 
 The escalation path is a small multi-agent handoff rather than a plain function call: the main agent doesn't decide urgency or write the Slack message itself, it delegates that to a specialist agent with a narrower job and its own prompt. That mirrors how a real support/HR workflow would split "handle the conversation" from "triage what gets escalated."
 
-`src/mcp-server.ts` exposes the same three tools over the Model Context Protocol as a separate entry point (run/tested via `src/test-mcp-client.ts`) — a way to check that the tools work as standalone, reusable capabilities rather than being hardcoded into this one CLI.
+`src/mcp-server.ts` exposes the same three tools over the Model Context Protocol (including the handoff to the escalation agent, so it needs `ANTHROPIC_API_KEY` as well as `SLACK_WEBHOOK_URL`) as a separate entry point (run/tested via `src/test-mcp-client.ts`) — a way to check that the tools work as standalone, reusable capabilities rather than being hardcoded into this one CLI.
 
 ## Setup
 
@@ -40,14 +40,14 @@ The escalation path is a small multi-agent handoff rather than a plain function 
 2. Copy `.env.example` to `.env` and fill in:
    - `ANTHROPIC_API_KEY` - from console.anthropic.com
    - `SLACK_WEBHOOK_URL` - create a free Incoming Webhook at api.slack.com/messaging/webhooks (takes ~5 min)
-3. `npm run dev` for the interactive CLI, or `npm run scenarios` to run scripted conversations that exercise each path (knowledge base answer, account lookup, angry customer, out-of-policy refund, cancellation).
+3. `npm run dev` for the interactive CLI, or `npm run scenarios` to run scripted conversations that exercise each path (knowledge base answer, account lookup, angry customer, out-of-policy refund, damage not covered by the quality guarantee, cancellation, skin reaction return).
 
-Requires Node 18+ (20+ recommended, for JSON import assertions).
+Requires Node 18+ (20+ recommended, for JSON import attributes).
 
 ## Design decisions worth knowing about
 
 - **Fixed 1-second retry delay (2 attempts) instead of exponential backoff** — deliberate scope cut. Fine for a single local user hitting the API directly; a production version fielding many concurrent conversations would need backoff + jitter to avoid hammering a rate limit.
-- **Naive keyword scoring instead of embeddings** — `utils/retrieval.ts` scores articles by whether query words appear in tags/title/content. Works fine for 6 knowledge base articles, would not scale past a few dozen. `utils/embeddings.ts` already wraps the Voyage AI embeddings API as a starting point for swapping in real vector search.
+- **Naive keyword scoring instead of embeddings** — `utils/retrieval.ts` scores articles by whether query words appear in tags/title/content. Works fine for 7 knowledge base articles, would not scale past a few dozen. `utils/embeddings.ts` already wraps the Voyage AI embeddings API as a starting point for swapping in real vector search.
 - **JSON files instead of a real datastore** — `data/customers.json` and `data/knowledgeBase.json` stand in for a database. Swapping them for a real DB wouldn't change the tool interface, just the implementation behind `lookupAccount.ts` / `searchKnowledgeBase.ts`.
 - **No auth/session persistence** — single-user CLI, conversation history lives in memory for the process lifetime. A real deployment would need session storage that survives a server restart.
 

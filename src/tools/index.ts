@@ -14,7 +14,7 @@ export const toolDefinitions: Anthropic.Tool[] = [
   {
     name: "search_knowledge_base",
     description:
-      "Search the support knowledge base (FAQ/policy articles) for information relevant to the customer's question. Always try this before answering questions about policy, shipping, returns, warranty, etc.",
+      "Search the support knowledge base (FAQ/policy articles) for information relevant to the customer's question. Always try this before answering questions about policy, shipping, returns, damaged products, skin reactions, etc.",
     input_schema: {
       type: "object",
       properties: {

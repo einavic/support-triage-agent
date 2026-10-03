@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { toolDefinitions, executeTool } from "../tools/index.js";
 import { systemPrompt } from "./systemPrompt.js";
 import { logEvent } from "../utils/logger.js";
+import { escalateToHuman } from "../tools/escalateToHuman.js";
 import type { ToolName } from "../types/index.js";
 
 
@@ -59,6 +60,13 @@ export async function runAgentLoop(
     
     let loopCounter = 0;
     history.push({ role: "user", content: userMessage });
+
+    await logEvent({
+      timestamp: new Date().toISOString(),
+      conversationId,
+      type: "user_message",
+      payload: { message: userMessage }
+    });
     
     while (loopCounter < 6) {      
       loopCounter++;
@@ -132,10 +140,28 @@ export async function runAgentLoop(
       });
 
       return { reply: replyText, history };
-    } 
+    }
+
+    // Fallback: the model didn't reach a final answer within 6 loops, so escalate
+    // directly (no second model call) with a fixed reason and urgency.
+    const escalation = await escalateToHuman({
+      reason: "max_iterations_exceeded",
+      summary: `The agent could not resolve this conversation within 6 steps (conversation ${conversationId}).\nCustomer's last message: "${userMessage}"`,
+      urgency: "medium"
+    }) as { escalated: boolean };
+
+    await logEvent({
+      timestamp: new Date().toISOString(),
+      conversationId,
+      type: "escalation",
+      payload: { reason: "max_iterations_exceeded", result: escalation }
+    });
+
     return {
-    reply: "I'm having trouble completing this right now — let me get a human to help.",
-    history
-  };
+      reply: escalation.escalated
+        ? "I'm having trouble completing this right now, so I've passed your request to a team member who will follow up shortly."
+        : "I'm having trouble completing this right now — please try again in a moment.",
+      history
+    };
 }
 

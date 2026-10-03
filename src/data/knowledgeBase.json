@@ -9,13 +9,13 @@
     "id": "kb-002",
     "title": "Return policy",
     "tags": ["returns", "refund"],
-    "content": "Items can be returned within 30 days of delivery if unused and in original packaging. Refunds are issued to the original payment method within 5-7 business days after we receive the returned item. Sale items are final sale and cannot be returned."
+    "content": "Items can be returned within 30 days of purchase if unused and in original packaging. Refunds are issued to the original payment method within 5-7 business days after we receive the returned item. Sale items are final sale and cannot be returned."
   },
   {
     "id": "kb-003",
-    "title": "Warranty coverage",
-    "tags": ["warranty", "defect", "broken"],
-    "content": "All Wonderful Gadgets products include a 1-year manufacturer warranty covering defects in materials and workmanship. Accidental damage and water damage are not covered. Warranty claims require a proof of purchase."
+    "title": "Damaged, defective, or expired products",
+    "tags": ["damaged", "defective", "defect", "broken", "leaking", "melted", "expired", "replacement", "quality", "warranty"],
+    "content": "All LookinGood products are guaranteed to arrive in good condition. If an item arrives damaged, broken, leaking, defective, or past its expiry date, contact support within 30 days of purchase with a photo of the product and your order number, and we will send a free replacement or issue a full refund. Damage that happens after delivery is not covered, including products that were dropped or exposed to heat, direct sunlight, or water (for example, left in a hot car or a steamy bathroom). There is no separate long-term warranty: unopened products are best used within 24 months, and opened products within the period shown by the open-jar symbol on the packaging (usually 6-12 months)."
   },
   {
     "id": "kb-004",
@@ -34,5 +34,11 @@
     "title": "Account and password help",
     "tags": ["account", "password", "login"],
     "content": "Passwords can be reset from the login page using the 'Forgot password' link. If the account email is no longer accessible, this must be handled by a support agent, not self-service."
+  },
+  {
+    "id": "kb-007",
+    "title": "Skin reactions and allergies",
+    "tags": ["reaction", "allergy", "allergic", "rash", "irritation", "itchy", "itching", "redness", "sensitive", "breakout"],
+    "content": "If a product causes irritation, redness, a rash, or any other skin reaction, stop using it immediately and rinse the area with cool water. Full ingredient lists are on every product page, and we recommend a patch test before first use. As an exception to the standard return policy, a product that caused a skin reaction can be returned for a full refund within 30 days of purchase even if it has been opened. If the reaction is severe, such as swelling of the face, lips, or eyes, or difficulty breathing, seek medical attention immediately; support will escalate severe reactions to a specialist team."
   }
 ]

@@ -4,8 +4,8 @@
     "email": "dana.levy@example.com",
     "name": "Dana Levy",
     "orders": [
-      { "id": "ord-5001", "product": "Wonderful Gadget Mini", "status": "shipped", "purchaseDate": "2026-07-01" },
-      { "id": "ord-5002", "product": "Wonderful Gadget Pro", "status": "delivered", "purchaseDate": "2026-06-10" }
+      { "id": "ord-5001", "product": "Golden Hour Eyeshadow Palette", "status": "shipped", "purchaseDate": "2026-09-28" },
+      { "id": "ord-5002", "product": "Velvet Matte Lipstick - Rosewood", "status": "delivered", "purchaseDate": "2026-08-12" }
     ]
   },
   {
@@ -13,7 +13,7 @@
     "email": "omer.cohen@example.com",
     "name": "Omer Cohen",
     "orders": [
-      { "id": "ord-5003", "product": "Wonderful Gadget Pro", "status": "processing", "purchaseDate": "2026-07-14" }
+      { "id": "ord-5003", "product": "Vitamin C Brightening Serum", "status": "processing", "purchaseDate": "2026-10-03" }
     ]
   },
   {
@@ -21,8 +21,114 @@
     "email": "maya.ben@example.com",
     "name": "Maya Ben",
     "orders": [
-      { "id": "ord-5004", "product": "Wonderful Gadget Mini", "status": "returned", "purchaseDate": "2026-05-20" },
-      { "id": "ord-5005", "product": "Wonderful Gadget Charger", "status": "delivered", "purchaseDate": "2026-06-28" }
+      { "id": "ord-5004", "product": "Silk Finish Foundation", "status": "returned", "purchaseDate": "2026-08-20" },
+      { "id": "ord-5005", "product": "Radiant Cover Concealer", "status": "delivered", "purchaseDate": "2026-09-05" }
+    ]
+  },
+  {
+    "id": "cust-1004",
+    "email": "noa.friedman@example.com",
+    "name": "Noa Friedman",
+    "orders": [
+      { "id": "ord-5006", "product": "Hyaluronic Hydrating Moisturizer", "status": "delivered", "purchaseDate": "2026-08-18" },
+      { "id": "ord-5007", "product": "Gentle Foaming Cleanser", "status": "delivered", "purchaseDate": "2026-08-18" },
+      { "id": "ord-5008", "product": "Daily Defense SPF 50 Sunscreen", "status": "shipped", "purchaseDate": "2026-09-30" }
+    ]
+  },
+  {
+    "id": "cust-1005",
+    "email": "yossi.mizrahi@example.com",
+    "name": "Yossi Mizrahi",
+    "orders": [
+      { "id": "ord-5009", "product": "Pro Blending Brush Set", "status": "refunded", "purchaseDate": "2026-07-22" }
+    ]
+  },
+  {
+    "id": "cust-1006",
+    "email": "shira.katz@example.com",
+    "name": "Shira Katz",
+    "orders": [
+      { "id": "ord-5010", "product": "Lash Lift Volumizing Mascara", "status": "delivered", "purchaseDate": "2026-09-02" },
+      { "id": "ord-5011", "product": "Waterproof Gel Eyeliner", "status": "delivered", "purchaseDate": "2026-09-02" }
+    ]
+  },
+  {
+    "id": "cust-1007",
+    "email": "avi.peretz@example.com",
+    "name": "Avi Peretz",
+    "orders": [
+      { "id": "ord-5012", "product": "Overnight Repair Eye Cream", "status": "processing", "purchaseDate": "2026-10-02" }
+    ]
+  },
+  {
+    "id": "cust-1008",
+    "email": "tamar.golan@example.com",
+    "name": "Tamar Golan",
+    "orders": [
+      { "id": "ord-5013", "product": "Sunkissed Bronzer", "status": "delivered", "purchaseDate": "2026-07-15" },
+      { "id": "ord-5014", "product": "Petal Flush Cream Blush", "status": "returned", "purchaseDate": "2026-08-25" },
+      { "id": "ord-5015", "product": "Dewy Setting Spray", "status": "shipped", "purchaseDate": "2026-09-29" }
+    ]
+  },
+  {
+    "id": "cust-1009",
+    "email": "eitan.shapiro@example.com",
+    "name": "Eitan Shapiro",
+    "orders": [
+      { "id": "ord-5016", "product": "Rosewater Hydrating Toner", "status": "delivered", "purchaseDate": "2026-09-10" }
+    ]
+  },
+  {
+    "id": "cust-1010",
+    "email": "lior.azoulay@example.com",
+    "name": "Lior Azoulay",
+    "orders": [
+      { "id": "ord-5017", "product": "Hydra-Glow Lip Oil", "status": "delivered", "purchaseDate": "2026-08-30" },
+      { "id": "ord-5018", "product": "Precision Lip Liner - Nude", "status": "delivered", "purchaseDate": "2026-08-30" }
+    ]
+  },
+  {
+    "id": "cust-1011",
+    "email": "rachel.weiss@example.com",
+    "name": "Rachel Weiss",
+    "orders": [
+      { "id": "ord-5019", "product": "Soft Blur Setting Powder", "status": "refunded", "purchaseDate": "2026-08-05" },
+      { "id": "ord-5020", "product": "Silk Finish Foundation", "status": "shipped", "purchaseDate": "2026-09-27" }
+    ]
+  },
+  {
+    "id": "cust-1012",
+    "email": "daniel.amar@example.com",
+    "name": "Daniel Amar",
+    "orders": [
+      { "id": "ord-5021", "product": "Brow Sculpt Pencil", "status": "processing", "purchaseDate": "2026-10-01" }
+    ]
+  },
+  {
+    "id": "cust-1013",
+    "email": "yael.harel@example.com",
+    "name": "Yael Harel",
+    "orders": [
+      { "id": "ord-5022", "product": "Vitamin C Brightening Serum", "status": "delivered", "purchaseDate": "2026-07-28" },
+      { "id": "ord-5023", "product": "Hyaluronic Hydrating Moisturizer", "status": "delivered", "purchaseDate": "2026-07-28" },
+      { "id": "ord-5024", "product": "Overnight Repair Eye Cream", "status": "shipped", "purchaseDate": "2026-09-26" }
+    ]
+  },
+  {
+    "id": "cust-1014",
+    "email": "ben.navon@example.com",
+    "name": "Ben Navon",
+    "orders": [
+      { "id": "ord-5025", "product": "Golden Hour Eyeshadow Palette", "status": "returned", "purchaseDate": "2026-09-08" }
+    ]
+  },
+  {
+    "id": "cust-1015",
+    "email": "michal.segal@example.com",
+    "name": "Michal Segal",
+    "orders": [
+      { "id": "ord-5026", "product": "Daily Defense SPF 50 Sunscreen", "status": "delivered", "purchaseDate": "2026-09-14" },
+      { "id": "ord-5027", "product": "Velvet Matte Lipstick - Rosewood", "status": "processing", "purchaseDate": "2026-10-03" }
     ]
   }
 ]

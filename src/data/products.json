@@ -1,0 +1,22 @@
+[
+  { "id": "prod-001", "name": "Velvet Matte Lipstick - Rosewood", "category": "Lips", "price": 24 },
+  { "id": "prod-002", "name": "Hydra-Glow Lip Oil", "category": "Lips", "price": 18 },
+  { "id": "prod-003", "name": "Precision Lip Liner - Nude", "category": "Lips", "price": 14 },
+  { "id": "prod-004", "name": "Silk Finish Foundation", "category": "Face", "price": 38 },
+  { "id": "prod-005", "name": "Radiant Cover Concealer", "category": "Face", "price": 26 },
+  { "id": "prod-006", "name": "Soft Blur Setting Powder", "category": "Face", "price": 32 },
+  { "id": "prod-007", "name": "Sunkissed Bronzer", "category": "Face", "price": 29 },
+  { "id": "prod-008", "name": "Petal Flush Cream Blush", "category": "Face", "price": 22 },
+  { "id": "prod-009", "name": "Dewy Setting Spray", "category": "Face", "price": 25 },
+  { "id": "prod-010", "name": "Lash Lift Volumizing Mascara", "category": "Eyes", "price": 21 },
+  { "id": "prod-011", "name": "Golden Hour Eyeshadow Palette", "category": "Eyes", "price": 45 },
+  { "id": "prod-012", "name": "Waterproof Gel Eyeliner", "category": "Eyes", "price": 19 },
+  { "id": "prod-013", "name": "Brow Sculpt Pencil", "category": "Eyes", "price": 17 },
+  { "id": "prod-014", "name": "Gentle Foaming Cleanser", "category": "Skincare", "price": 24 },
+  { "id": "prod-015", "name": "Rosewater Hydrating Toner", "category": "Skincare", "price": 20 },
+  { "id": "prod-016", "name": "Vitamin C Brightening Serum", "category": "Skincare", "price": 48 },
+  { "id": "prod-017", "name": "Hyaluronic Hydrating Moisturizer", "category": "Skincare", "price": 36 },
+  { "id": "prod-018", "name": "Daily Defense SPF 50 Sunscreen", "category": "Skincare", "price": 30 },
+  { "id": "prod-019", "name": "Overnight Repair Eye Cream", "category": "Skincare", "price": 42 },
+  { "id": "prod-020", "name": "Pro Blending Brush Set", "category": "Tools", "price": 55 }
+]
