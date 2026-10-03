@@ -38,11 +38,12 @@ export interface EscalateToHumanInput {
 export interface HandOffToEscalationAgentInput {
   reason: string;
   context: string;
+  customerEmail: string;
 }
 
 export interface LogEntry {
   timestamp: string;
   conversationId: string;
-  type: "user_message" | "tool_result" | "agent_response" | "escalation" | "error";
+  type: "user_message" | "tool_result" | "agent_response" | "escalation" | "email" | "error";
   payload: unknown;
 }

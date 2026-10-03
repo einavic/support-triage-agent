@@ -1,7 +1,8 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { escalateToHuman } from "../tools/escalateToHuman.js";
 import { logEvent } from "../utils/logger.js";
-import type { HandOffToEscalationAgentInput } from "../types/index.js";
+import { sendEscalationEmail } from "../utils/email.js";
+import type { EscalateToHumanInput, HandOffToEscalationAgentInput } from "../types/index.js";
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const MODEL = "claude-sonnet-5";
@@ -37,7 +38,7 @@ export async function runEscalationAgent(conversationId: string, input: HandOffT
     max_tokens: 512,
     system: escalationSystemPrompt,
     tools: [escalationTool],
-    messages: [{ role: "user", content: `Reason for handoff: ${input.reason}\n\nContext:\n${input.context}` }]
+    messages: [{ role: "user", content: `Reason for handoff: ${input.reason}\nCustomer email: ${input.customerEmail}\n\nContext:\n${input.context}` }]
   });
 
   await logEvent({
@@ -49,9 +50,26 @@ export async function runEscalationAgent(conversationId: string, input: HandOffT
 
   for (const block of response.content) {
     if (block.type === "tool_use" && block.name === "escalate_to_human") {
-      return await escalateToHuman(block.input as any);
+      const escalation = block.input as EscalateToHumanInput;
+      // The customer's email is always added to the Slack message, so the team knows who to contact.
+      const result = await escalateToHuman({
+        ...escalation,
+        summary: `${escalation.summary}\nCustomer email: ${input.customerEmail}`
+      }) as { escalated: boolean; note: string };
+
+      // Only confirm to the customer by email once the team actually received the escalation.
+      if (!result.escalated) return { ...result, emailSent: false };
+
+      const email = await sendEscalationEmail(input.customerEmail, conversationId);
+      await logEvent({
+        timestamp: new Date().toISOString(),
+        conversationId,
+        type: "email",
+        payload: email
+      });
+      return { ...result, emailSent: email.sent };
     }
   }
 
-  return { escalated: false, note: "Escalation specialist did not escalate." };
+  return { escalated: false, emailSent: false, note: "Escalation specialist did not escalate." };
 }

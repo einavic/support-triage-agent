@@ -34,6 +34,11 @@ test("tool result renders nested objects as indented key: value lines", () => {
   assert.equal(text, "[16:25:41] RESULT <- lookup_account\n  found: true\n  customer:\n    id: cust-1\n");
 });
 
+test("email events show who it was meant for and where it went", () => {
+  const text = formatEntry(entry("email", { sent: true, intendedFor: "dana.levy@example.com", sentTo: "me@example.test", note: "Confirmation email sent." }));
+  assert.equal(text, "[16:25:41] EMAIL\n  sent: true\n  intendedFor: dana.levy@example.com\n  sentTo: me@example.test\n  note: Confirmation email sent.\n");
+});
+
 test("fallback escalation and errors are labelled", () => {
   assert.match(formatEntry(entry("escalation", { reason: "max_iterations_exceeded" })), /FALLBACK ESCALATION\n  reason: max_iterations_exceeded/);
   assert.match(formatEntry(entry("error", { message: "boom" })), /ERROR\n  message: boom/);

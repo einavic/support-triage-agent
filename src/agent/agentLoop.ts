@@ -59,6 +59,10 @@ export async function runAgentLoop(
 ): Promise<{ reply: string; history: Anthropic.MessageParam[] }> {
     
     let loopCounter = 0;
+    // Text the model writes for the customer at every step of this turn - including text written
+    // alongside a tool call (e.g. "I'm sorry... I'll escalate this"), not just the final response.
+    const replyParts: string[] = [];
+    const fullReply = (...extra: string[]) => [...replyParts, ...extra].join("\n\n");
     history.push({ role: "user", content: userMessage });
 
     await logEvent({
@@ -86,7 +90,7 @@ export async function runAgentLoop(
         }
 
         return {
-          reply: "Sorry, I'm having trouble processing that right now — please try again in a moment.",
+          reply: fullReply("Sorry, I'm having trouble processing that right now — please try again in a moment."),
           history
         };
       }
@@ -96,8 +100,14 @@ export async function runAgentLoop(
         conversationId,
         type: "agent_response",
        payload: response
-      }); 
-      
+      });
+
+      const stepText = response.content
+        .map(block => (block.type === "text" ? block.text.trim() : ""))
+        .filter(Boolean)
+        .join("\n\n");
+      if (stepText) replyParts.push(stepText);
+
       if (response.stop_reason === "tool_use") {
         const toolResultBlocks: { type: "tool_result"; tool_use_id: string; content: string }[] = [];
         for (const block of response.content) {
@@ -125,12 +135,7 @@ export async function runAgentLoop(
         continue;
       }
 
-      let replyText = "";
-      for (const block of response.content) {
-        if (block.type === "text") {
-          replyText += block.text;
-        }
-      }
+      const replyText = fullReply();
 
       await logEvent({
         timestamp: new Date().toISOString(),
@@ -158,9 +163,9 @@ export async function runAgentLoop(
     });
 
     return {
-      reply: escalation.escalated
+      reply: fullReply(escalation.escalated
         ? "I'm having trouble completing this right now, so I've passed your request to a team member who will follow up shortly."
-        : "I'm having trouble completing this right now — please try again in a moment.",
+        : "I'm having trouble completing this right now — please try again in a moment."),
       history
     };
 }

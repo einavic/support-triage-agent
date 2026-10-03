@@ -43,15 +43,16 @@ server.registerTool(
   "hand_off_to_escalation_agent",
   {
     title: "hand off to escalation agent",
-    description: "Escalate the conversation to a human support agent via Slack. A specialist agent decides the urgency and writes the summary. Use this when you are not confident in the answer, the request needs authority you don't have (e.g. approving a refund exception), or the customer is upset/angry.",
+    description: "Pass the conversation to a human support team member via Slack (a specialist agent decides the urgency and writes the summary), and email the customer a confirmation. Use this when the customer needs something only a team member can do (cancelling an order, starting a return or refund, approving a policy exception), asks for something outside policy, is frustrated or angry, describes a severe skin reaction, or when the knowledge base doesn't answer the question. Don't ask the customer for permission first.",
     inputSchema: {
       reason: z.string().describe("Short machine-readable reason, e.g. 'refund_exception', 'angry_customer', 'low_confidence'."),
-      context: z.string().describe("A human-readable summary of the conversation for the support agent who picks this up.")
+      context: z.string().describe("A human-readable summary of the conversation for the support agent who picks this up."),
+      customerEmail: z.string().describe("The customer's email address - given by the customer or found with lookup_account.")
     }
   },
-  async ({ reason, context }) => {
+  async ({ reason, context, customerEmail }) => {
     // MCP calls have no conversation of their own, so each handoff gets a fresh id for its log file.
-    const result = await runEscalationAgent(randomUUID(), { reason, context });
+    const result = await runEscalationAgent(randomUUID(), { reason, context, customerEmail });
     return { content: [{ type: "text", text: JSON.stringify(result) }] };
   }
 );

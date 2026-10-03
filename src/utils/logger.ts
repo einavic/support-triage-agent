@@ -117,6 +117,9 @@ export function formatEntry(entry: LogEntry): string {
       if (isModelResponse(payload)) return renderModelResponse("ESCALATION AGENT", time, payload);
       return `\n[${time}] FALLBACK ESCALATION${renderValue(payload, "  ")}\n`;
 
+    case "email":
+      return `[${time}] EMAIL${renderValue(payload, "  ")}\n`;
+
     case "error":
       return `\n[${time}] ERROR${renderValue(payload, "  ")}\n`;
   }

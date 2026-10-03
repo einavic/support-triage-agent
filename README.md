@@ -9,6 +9,8 @@ A customer sends a message. The agent decides, turn by turn, how to help:
 - answers from a knowledge base of policy/FAQ articles via `search_knowledge_base`
 - looks up the customer's real order/account data via `lookup_account`
 - hands off to a dedicated escalation agent when it's not confident, the request needs authority it doesn't have (e.g. approving a refund exception), or the customer is upset
+- before handing off, makes sure it knows who the customer is (their email, given directly or found from an order id), so the team can follow up
+- after a successful escalation, emails the customer a confirmation that their request reached the support team (in addition to the chat reply)
 
 Every customer message, tool call, model response, and final reply is logged, so a full decision trail is inspectable after the fact — not just the final answer, but every step that led to it. Each conversation gets two files in `logs/`, named after the local date and time it started (e.g. `2026-10-03_16-25-41`):
 
@@ -27,7 +29,8 @@ User message
                    -> hand_off_to_escalation_agent -> escalationAgent.ts
                         (a second Claude call with its own system prompt: decides urgency,
                          writes a human-readable summary, then calls escalateToHuman.ts
-                         which posts to a Slack webhook)
+                         which posts to a Slack webhook; if that succeeds, utils/email.ts
+                         sends the customer a confirmation email via Resend)
               -> result fed back to Claude, loop continues (max 6 iterations, then a
                  fallback escalation so a confused model can't loop forever)
          -> once Claude has a final answer: return it, log it
@@ -43,8 +46,9 @@ The escalation path is a small multi-agent handoff rather than a plain function 
 2. Copy `.env.example` to `.env` and fill in:
    - `ANTHROPIC_API_KEY` - from console.anthropic.com
    - `SLACK_WEBHOOK_URL` - create a free Incoming Webhook at api.slack.com/messaging/webhooks (takes ~5 min)
+   - `RESEND_API_KEY` and `EMAIL_TEST_RECIPIENT` (optional) - for confirmation emails. Create a "Sending access" API key at resend.com and set `EMAIL_TEST_RECIPIENT` to the address you signed up with. The demo's customer addresses are fake, so **every email goes to `EMAIL_TEST_RECIPIENT`** (the intended customer is named in the email); if either is unset, no email is sent.
 3. `npm run dev` for the interactive CLI, or `npm run scenarios` to run scripted conversations that exercise each path (knowledge base answer, account lookup, angry customer, out-of-policy refund, damage not covered by the quality guarantee, cancellation, skin reaction return).
-4. `npm test` runs the offline unit tests (no API keys needed; Slack calls are mocked).
+4. `npm test` runs the offline unit tests (no API keys needed; Slack and email calls are mocked).
 
 Requires Node 18+ (20+ recommended, for JSON import attributes).
 
