@@ -7,6 +7,10 @@ import { searchKnowledgeBase } from "./tools/searchKnowledgeBase.js";
 import { lookupAccount } from "./tools/lookupAccount.js";
 import { runEscalationAgent } from "./agent/escalationAgent.js";
 
+// This file is the entry point for the MCP server. 
+// It registers the tools and starts the server.
+// The server listens for incoming requests from the MCP client, 
+// and dispatches them to the appropriate tool handler.
 const server = new McpServer({ name: "support-triage-tools", version: "1.0.0" });
 
 server.registerTool(

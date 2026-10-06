@@ -3,4 +3,3 @@ dist/
 .env
 logs/*.jsonl
 logs/*.log
-!logs/.gitkeep

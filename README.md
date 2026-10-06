@@ -62,6 +62,6 @@ Requires Node 18+ (20+ recommended, for JSON import attributes).
 ## What I'd build next
 
 - Swap naive retrieval for the embeddings pipeline that's already stubbed in
-- Add unit tests per tool handler, plus an eval harness to measure how often escalation decisions are actually correct (not just whether the agent escalates, but whether it *should have*)
+- Add an eval harness to measure how often escalation decisions are actually correct (not just whether the agent escalates, but whether it *should have*)
 - Route escalations by topic/urgency to different Slack channels instead of one webhook
 - Add a lightweight web or Slack-bot front end instead of CLI

@@ -52,6 +52,3 @@ export function searchArticles(
   scores.sort((a, b) => b.score - a.score);
   return scores.slice(0, topK).map(({ article }) => article);
 }
-
-
-
