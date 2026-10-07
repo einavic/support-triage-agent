@@ -16,8 +16,13 @@ function Json({ label, value }: { label: string; value: unknown }) {
 function summarizeResult(tool: string, result: unknown): string {
   const r = (result ?? {}) as Record<string, any>;
   switch (tool) {
-    case "search_knowledge_base":
-      return r.found ? `found: ${(r.articles ?? []).map((a: { id: string }) => a.id).join(", ")}` : "no matching articles";
+    case "search_knowledge_base": {
+      const method = `${r.method ?? "search"}${r.fallbackReason ? ` (fallback: ${r.fallbackReason})` : ""}`;
+      const found = (r.articles ?? [])
+        .map((a: { id: string; score?: number }) => (a.score !== undefined ? `${a.id} (${a.score})` : a.id))
+        .join(", ");
+      return r.found ? `${method}: ${found}` : `${method}: no matching articles`;
+    }
     case "lookup_account":
       return r.found ? `found ${r.customer?.name ?? "customer"} (${r.customer?.id}), ${r.customer?.orders?.length ?? 0} order(s)` : "no matching account";
     case "hand_off_to_escalation_agent":

@@ -24,7 +24,8 @@ User message
     -> agentLoop.ts  (calls Claude with tools + system prompt/policy, retries on API errors)
          -> if Claude requests a tool:
               -> tools/index.ts dispatches to the right handler
-                   -> searchKnowledgeBase.ts   (keyword-scores data/knowledgeBase.json, see utils/retrieval.ts)
+                   -> searchKnowledgeBase.ts   (semantic search over data/knowledgeBase.json with Voyage AI
+                                                embeddings, see rag/; keyword search as fallback)
                    -> lookupAccount.ts          (looks up data/customers.json by email or order id)
                    -> hand_off_to_escalation_agent -> escalationAgent.ts
                         (a second Claude call with its own system prompt: decides urgency,
@@ -52,7 +53,25 @@ The escalation path is a small multi-agent handoff rather than a plain function 
 5. Chat UI (React): run `npm install --prefix web` once, then either
    - **development:** `npm run server` and, in a second terminal, `npm run web` → open http://localhost:5173 (changes to the page reload instantly), or
    - **built version:** `npm run web:build` once, then `npm run server` → open http://localhost:3000 (one process serves both the page and the API).
-6. `npm test` runs the offline unit tests (no API keys needed; Slack, email and the agent are mocked).
+6. `npm test` runs the offline unit tests (no API keys needed; Slack, email, embeddings and the agent are mocked).
+7. `npm run eval:retrieval` runs the retrieval evaluation (needs `VOYAGE_API_KEY`; see below).
+
+## Retrieval (RAG)
+
+`search_knowledge_base` searches by meaning, not just matching words:
+
+- **Indexing** — each article (title, topics, content) is turned into an embedding with Voyage AI (`voyage-3.5-lite`, `src/rag/`). Embeddings are cached in `.cache/embeddings.json`, keyed by a hash of model + text, so a text is only ever embedded once; a changed article is simply re-embedded.
+- **Search** — the question is embedded (as a *query*), compared with every article by cosine similarity, and the top 2 articles scoring at least `KB_MIN_SCORE` (0.40) are returned **with their scores**, so Claude can judge a loosely related match. Nothing above the threshold → `found: false`.
+- **Fallback** — if the embedding API fails (no key, outage, rate limit), the tool falls back to keyword search and says so in the result (`method`, `fallbackReason`), which the debug panel shows.
+
+**Evaluation** — `eval/retrieval-set.json` holds 41 real customer-style questions (typos, slang, Hebrew, off-topic messages), each labeled with the article/product it should find, or with "nothing". `npm run eval:retrieval` scores keyword search against embedding search (Hit@1, Hit@3, MRR, and how often "nothing" is correctly returned), sweeps thresholds, lists every failure, and saves the report to `eval/results/`. First run (2026-10-07):
+
+| Collection | Keywords (overall) | Embeddings (overall, best threshold) |
+|---|---|---|
+| Knowledge base (34 questions) | 44% | 71% — Hit@1 40% → 76% without threshold, MRR 0.55 → 0.85 |
+| Products (14 questions) | 43% | 86% — only misses: "cheapest" and "under $20" (price filtering, not meaning) |
+
+The answerable and unanswerable questions' scores overlap (0.37–0.71 vs 0.33–0.51), so no threshold separates them perfectly — hence the lenient 0.40 plus letting Claude judge. Caveats: small sample, threshold chosen on the same questions, and raw customer messages (the agent rewrites them into cleaner queries first).
 
 ## Web API
 
@@ -77,12 +96,11 @@ Requires Node 18+ (20+ recommended, for JSON import attributes).
 ## Design decisions worth knowing about
 
 - **Fixed 1-second retry delay (2 attempts) instead of exponential backoff** — deliberate scope cut. Fine for a single local user hitting the API directly; a production version fielding many concurrent conversations would need backoff + jitter to avoid hammering a rate limit.
-- **Naive keyword scoring instead of embeddings** — `utils/retrieval.ts` scores articles by whether query words appear in tags/title/content. Works fine for 8 knowledge base articles, would not scale past a few dozen. `utils/embeddings.ts` already wraps the Voyage AI embeddings API as a starting point for swapping in real vector search.
+- **In-memory vector search instead of a vector database** — with 8 articles and 20 products, comparing the question against every embedding is instant. Past a few thousand documents this would move to a vector database (or an approximate-nearest-neighbor index), without changing the tool interface.
 - **JSON files instead of a real datastore** — `data/customers.json` and `data/knowledgeBase.json` stand in for a database. Swapping them for a real DB wouldn't change the tool interface, just the implementation behind `lookupAccount.ts` / `searchKnowledgeBase.ts`.
 - **No auth/session persistence** — conversation history lives in memory for the process lifetime (in the CLI, and per conversation in the web API). A real deployment would need session storage that survives a server restart.
 
 ## What I'd build next
 
-- Swap naive retrieval for the embeddings pipeline that's already stubbed in
 - Add an eval harness to measure how often escalation decisions are actually correct (not just whether the agent escalates, but whether it *should have*)
 - Route escalations by topic/urgency to different Slack channels instead of one webhook

@@ -1,0 +1,150 @@
+Retrieval evaluation - 41 questions, model voyage-3.5-lite
+
+=== Knowledge base: 34 scored questions ===
+  method                     Hit@1   Hit@3   MRR    "nothing" ok   overall
+  keywords                     40%     68%   0.55     56%         44%  (15/34)
+  embeddings (no threshold)    76%     92%   0.85      0%         56%  (19/34)
+  embeddings (threshold 0.45)   68%     76%   0.85     78%         71%  (24/34)
+
+  Threshold sweep (embeddings): threshold -> Hit@1 of answerable / "nothing" ok / overall
+    0.200    76% /    0% /   56%
+    0.225    76% /    0% /   56%
+    0.250    76% /    0% /   56%
+    0.275    76% /    0% /   56%
+    0.300    76% /    0% /   56%
+    0.325    76% /    0% /   56%
+    0.350    76% /   11% /   59%
+    0.375    72% /   22% /   59%
+    0.400    72% /   22% /   59%
+    0.425    72% /   44% /   65%
+    0.450    68% /   78% /   71%   <- best
+    0.475    56% /   89% /   65%
+    0.500    48% /   89% /   59%
+    0.525    40% /  100% /   56%
+    0.550    36% /  100% /   53%
+    0.575    28% /  100% /   47%
+    0.600    20% /  100% /   41%
+
+  Top score per question (does a threshold separate "has an answer" from "nothing"?):
+    0.707  answer   #31 can i cancel my order?
+    0.682  answer   #11 how can i track my order?
+    0.658  answer   #23 i cant remember my password
+    0.601  answer   #38 my skin is turning red!
+    0.598  answer   #2 can you remind me when can i return the product?
+    0.588  answer   #32 i want to remove my order
+    0.553  answer   #36 when my package will arrive?
+    0.550  answer   #24 i got sick from your product!!
+    0.542  answer   #4 i cant remember the email i registered with and the ord
+    0.542  answer   #22 your product is terrible, i want a refund
+    0.524  answer   #16 its says shipping but still didnt get it !!
+    0.521  answer   #17 how do i register to the website?
+    0.513  answer   #8 plase explain about how ill get my bronzer
+    0.507  answer   #7 give me my order statuuuuussssss
+    0.506  nothing  #25 i really like your product, thank you <3
+    0.505  answer   #29 אפשר להזמין דרכך מוצרים?
+    0.500  answer   #10 what type of products do you have?
+    0.486  answer   #33 what types of products do you have?
+    0.471  answer   #19 can i order if im in austrelia?
+    0.465  answer   #27 אפשר בבקשה להזמין מוצר
+    0.465  answer   #41 can i get a phone number to call someone and talk to?
+    0.461  nothing  #15 tree
+    0.455  answer   #26 whats this website?
+    0.449  answer   #21 the mascara arrived empty!!!
+    0.446  nothing  #12 i want to talk with a person now!!!
+    0.444  nothing  #30 אתם אתר גרוע
+    0.429  nothing  #13 person
+    0.428  answer   #35 what abiut delivery?
+    0.415  nothing  #6 hey whats up?
+    0.412  nothing  #5 מה נשמע? אפשר עזרה?
+    0.407  answer   #37 iwant to know whers my cream
+    0.375  answer   #18 when will it come?
+    0.361  nothing  #28 תביאו לי לדבר עם נציג
+    0.332  nothing  #1 whats your newest car?
+
+  Keyword failures (19):
+    #1   whats your newest car?                           want: nothing            got: kb-003
+    #6   hey whats up?                                    want: nothing            got: kb-004
+    #8   plase explain about how ill get my bronzer       want: kb-001 / kb-004    got: kb-008
+    #10  what type of products do you have?               want: kb-008             got: kb-003, kb-008, kb-002
+    #12  i want to talk with a person now!!!              want: nothing            got: kb-003, kb-007, kb-008
+    #17  how do i register to the website?                want: kb-006 / none      got: kb-008, kb-002, kb-003
+    #18  when will it come?                               want: kb-001 / kb-004    got: kb-007, kb-003, kb-005
+    #19  can i order if im in austrelia?                  want: kb-001             got: kb-004, kb-005, kb-001
+    #21  the mascara arrived empty!!!                     want: kb-003             got: kb-008, kb-001, kb-002
+    #22  your product is terrible, i want a refund        want: kb-002             got: kb-003, kb-007, kb-002
+    #24  i got sick from your product!!                   want: kb-007             got: kb-003, kb-006, kb-007
+    #25  i really like your product, thank you <3         want: nothing            got: kb-003, kb-001, kb-007
+    #27  אפשר בבקשה להזמין מוצר                           want: kb-008             got: nothing
+    #29  אפשר להזמין דרכך מוצרים?                         want: kb-008             got: nothing
+    #32  i want to remove my order                        want: kb-005             got: kb-004, kb-005, kb-001
+    #33  what types of products do you have?              want: kb-008             got: kb-003, kb-008, kb-002
+    #36  when my package will arrive?                     want: kb-001 / kb-004    got: kb-003, kb-007
+    #37  iwant to know whers my cream                     want: kb-004             got: kb-008, kb-002, kb-003
+    #41  can i get a phone number to call someone and tal want: kb-008             got: kb-007, kb-008, kb-003
+
+  Embedding failures at threshold 0.45 (10):
+    #7   give me my order statuuuuussssss                 want: kb-004             got: kb-005 0.51, kb-004 0.49
+    #8   plase explain about how ill get my bronzer       want: kb-001 / kb-004    got: kb-008 0.51
+    #15  tree                                             want: nothing            got: kb-005 0.46, kb-006 0.45
+    #18  when will it come?                               want: kb-001 / kb-004    got: nothing
+    #19  can i order if im in austrelia?                  want: kb-001             got: kb-005 0.47
+    #21  the mascara arrived empty!!!                     want: kb-003             got: nothing
+    #22  your product is terrible, i want a refund        want: kb-002             got: kb-003 0.54, kb-007 0.51, kb-002 0.49
+    #25  i really like your product, thank you <3         want: nothing            got: kb-003 0.51, kb-008 0.49, kb-002 0.47
+    #35  what abiut delivery?                             want: kb-001 / kb-004    got: nothing
+    #37  iwant to know whers my cream                     want: kb-004             got: nothing
+
+=== Products: 14 scored questions ===
+  method                     Hit@1   Hit@3   MRR    "nothing" ok   overall
+  keywords                     20%     60%   0.37     56%         43%  (6/14)
+  embeddings (no threshold)    60%     60%   0.67      0%         21%  (3/14)
+  embeddings (threshold 0.5)   60%     60%   0.67    100%         86%  (12/14)
+
+  Threshold sweep (embeddings): threshold -> Hit@1 of answerable / "nothing" ok / overall
+    0.200    60% /    0% /   21%
+    0.225    60% /    0% /   21%
+    0.250    60% /    0% /   21%
+    0.275    60% /   11% /   29%
+    0.300    60% /   11% /   29%
+    0.325    60% /   11% /   29%
+    0.350    60% /   22% /   36%
+    0.375    60% /   44% /   50%
+    0.400    60% /   78% /   71%
+    0.425    60% /   78% /   71%
+    0.450    60% /   78% /   71%
+    0.475    60% /   78% /   71%
+    0.500    60% /  100% /   86%   <- best
+    0.525    60% /  100% /   86%
+    0.550     0% /  100% /   64%
+    0.575     0% /  100% /   64%
+    0.600     0% /  100% /   64%
+
+  Top score per question (does a threshold separate "has an answer" from "nothing"?):
+    0.550  answer   #3 do you some mascaras?
+    0.544  answer   #34 what do you have for dty skin?
+    0.542  answer   #14 what you have for eyes?
+    0.492  nothing  #15 tree
+    0.487  nothing  #25 i really like your product, thank you <3
+    0.454  answer   #40 whats your cheapest thing?
+    0.392  nothing  #1 whats your newest car?
+    0.391  answer   #39 what can i buy with 20 $?
+    0.391  nothing  #13 person
+    0.377  nothing  #5 מה נשמע? אפשר עזרה?
+    0.360  nothing  #30 אתם אתר גרוע
+    0.353  nothing  #12 i want to talk with a person now!!!
+    0.340  nothing  #6 hey whats up?
+    0.258  nothing  #28 תביאו לי לדבר עם נציג
+
+  Keyword failures (8):
+    #1   whats your newest car?                           want: nothing            got: prod-008
+    #3   do you some mascaras?                            want: prod-010           got: nothing
+    #6   hey whats up?                                    want: nothing            got: prod-009
+    #12  i want to talk with a person now!!!              want: nothing            got: prod-009, prod-001, prod-004
+    #25  i really like your product, thank you <3         want: nothing            got: prod-008
+    #34  what do you have for dty skin?                   want: prod-004 / prod-008 / prod-009 / prod-015 / prod-016 / prod-017 got: prod-005, prod-007, prod-008
+    #39  what can i buy with 20 $?                        want: prod-002 / prod-003 / prod-012 / prod-013 / prod-015 got: prod-001, prod-002, prod-004
+    #40  whats your cheapest thing?                       want: prod-003           got: prod-008
+
+  Embedding failures at threshold 0.5 (2):
+    #39  what can i buy with 20 $?                        want: prod-002 / prod-003 / prod-012 / prod-013 / prod-015 got: nothing
+    #40  whats your cheapest thing?                       want: prod-003           got: nothing

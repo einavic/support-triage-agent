@@ -11,7 +11,8 @@
     "server": "tsx src/server/index.ts",
     "web": "npm --prefix web run dev",
     "web:build": "npm --prefix web run build",
-    "test": "tsx --test tests/*.test.ts"
+    "test": "tsx --test tests/*.test.ts",
+    "eval:retrieval": "tsx eval/evalRetrieval.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.32.0",

@@ -1,4 +1,5 @@
 import type { KnowledgeArticle } from "../types/index.js";
+import type { Product } from "../rag/documents.js";
 
 function tokenize(text: string): string[] {
   return text.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
@@ -51,4 +52,24 @@ export function searchArticles(
   }
   scores.sort((a, b) => b.score - a.score);
   return scores.slice(0, topK).map(({ article }) => article);
+}
+
+/**
+ * Keyword search over products, with the same scoring as articles: the name counts as the
+ * title, category and skin types as tags, and the description as content.
+ */
+export function searchProductsByKeywords(query: string, products: Product[], topK = 3): Product[] {
+  const scored = products
+    .map(product => ({
+      product,
+      score: scoreArticle(query, {
+        id: product.id,
+        title: product.name,
+        tags: [product.category.toLowerCase(), ...product.skinTypes],
+        content: product.description
+      })
+    }))
+    .filter(({ score }) => score > 0);
+  scored.sort((a, b) => b.score - a.score);
+  return scored.slice(0, topK).map(({ product }) => product);
 }

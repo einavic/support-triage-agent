@@ -36,6 +36,15 @@ test("every ordered product exists in the catalog", () => {
   }
 });
 
+test("products have a description and valid skin types", () => {
+  const SKIN_TYPES = ["all", "dry", "oily", "combination", "normal", "sensitive"];
+  for (const product of products) {
+    assert.ok(product.description.length > 20, `${product.id} needs a description`);
+    assert.ok(product.skinTypes.length > 0, `${product.id} needs skin types`);
+    for (const type of product.skinTypes) assert.ok(SKIN_TYPES.includes(type), `${product.id}: unknown skin type "${type}"`);
+  }
+});
+
 test("products have unique ids and positive prices", () => {
   assert.equal(new Set(products.map(p => p.id)).size, products.length);
   for (const product of products) {

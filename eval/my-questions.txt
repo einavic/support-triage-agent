@@ -1,0 +1,46 @@
+# Write one customer question per line (lines starting with # are ignored).
+# No need to add the answer - I'll label them and show you the labels to check.
+
+questions:
+whats your newest car? 
+can you remind me when can i return the product?
+do you some mascaras?
+i cant remember the email i registered with and the order id but i want to check my order 
+מה נשמע? אפשר עזרה?
+hey whats up?
+give me my order statuuuuussssss
+plase explain about how ill get my bronzer
+whats your best product?
+what type of products do you have?
+how can i track my order?
+i want to talk with a person now!!!
+person
+what you have for eyes?
+tree
+its says shipping but still didnt get it !!
+how do i register to the website? 
+when will it come? 
+can i order if im in austrelia?
+i want to buy a gift for my friend
+the mascara arrived empty!!!
+your product is terrible, i want a refund
+i cant remember my password
+i got sick from your product!!
+i really like your product, thank you <3
+whats this website?
+אפשר בבקשה להזמין מוצר
+תביאו לי לדבר עם נציג
+אפשר להזמין דרכך מוצרים?
+אתם אתר גרוע
+can i cancel my order? 
+i want to remove my order 
+what types of products do you have?
+what do you have for dty skin?
+what abiut delivery?
+when my package will arrive?
+iwant to know whers my cream 
+my skin is turning red! 
+what can i buy with 20 $?
+whats your cheapest thing?
+can i get a phone number to call someone and talk to? 
+
