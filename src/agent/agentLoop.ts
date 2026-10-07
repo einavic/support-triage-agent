@@ -138,6 +138,10 @@ export async function runAgentLoop(
       continue;
     }
 
+    // Save the final answer in the history too - otherwise on the next turn Claude can't see
+    // what it already told the customer, and answers everything again.
+    history.push({ role: "assistant", content: response.content });
+
     const replyText = fullReply();
 
     await logEvent({
@@ -180,10 +184,11 @@ export async function runAgentLoop(
     emailSent = email.sent;
   }
 
-  return {
-    reply: fullReply(escalation.escalated
-      ? `I'm having trouble completing this right now, so I've passed your request to a team member who will follow up shortly.${emailSent ? " You'll also get a confirmation email." : ""}`
-      : "I'm having trouble completing this right now — please try again in a moment."),
-    history
-  };
+  const fallbackMessage = escalation.escalated
+    ? `I'm having trouble completing this right now, so I've passed your request to a team member who will follow up shortly.${emailSent ? " You'll also get a confirmation email." : ""}`
+    : "I'm having trouble completing this right now — please try again in a moment.";
+  // Keep the history complete: the customer saw this message, so Claude should see it next turn too.
+  history.push({ role: "assistant", content: fallbackMessage });
+
+  return { reply: fullReply(fallbackMessage), history };
 }

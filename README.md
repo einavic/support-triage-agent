@@ -48,20 +48,41 @@ The escalation path is a small multi-agent handoff rather than a plain function 
    - `SLACK_WEBHOOK_URL` - create a free Incoming Webhook at api.slack.com/messaging/webhooks (takes ~5 min)
    - `RESEND_API_KEY` and `EMAIL_TEST_RECIPIENT` (optional) - for confirmation emails. Create a "Sending access" API key at resend.com and set `EMAIL_TEST_RECIPIENT` to the address you signed up with. The demo's customer addresses are fake, so **every email goes to `EMAIL_TEST_RECIPIENT`** (the intended customer is named in the email); if either is unset, no email is sent.
 3. `npm run dev` for the interactive CLI, or `npm run scenarios` to run scripted conversations that exercise each path (knowledge base answer, account lookup, angry customer, out-of-policy refund, damage not covered by the quality guarantee, cancellation, skin reaction return).
-4. `npm test` runs the offline unit tests (no API keys needed; Slack and email calls are mocked).
+4. `npm run server` starts the web API on http://localhost:3000 (see below).
+5. Chat UI (React): run `npm install --prefix web` once, then either
+   - **development:** `npm run server` and, in a second terminal, `npm run web` → open http://localhost:5173 (changes to the page reload instantly), or
+   - **built version:** `npm run web:build` once, then `npm run server` → open http://localhost:3000 (one process serves both the page and the API).
+6. `npm test` runs the offline unit tests (no API keys needed; Slack, email and the agent are mocked).
+
+## Web API
+
+`src/server/` is an Express server (listening on `127.0.0.1` only) that runs the same agent as the CLI:
+
+- `POST /api/chat` with `{ "message": "...", "conversationId": "..." }` (leave out `conversationId` to start a new conversation) returns:
+  - `conversationId` — send it back with the next message to continue the conversation
+  - `reply` — the agent's answer
+  - `escalated` — whether this turn handed the conversation to the support team
+  - `trace` — every step the agents took this turn (model calls with token counts, tool calls and results, escalation, email), built live from the same events the logger writes
+  - `logFile` — the conversation's readable log file
+- `GET /api/health` — a simple liveness check
+
+## Chat UI
+
+`web/` is a React + TypeScript app built with Vite: a chat on the left and a **debug panel** on the right that shows, for every message, each step the agents took — main-agent model calls (with token counts and the tools they called), tool results (with a one-line summary and the full JSON), the escalation agent's urgency and Slack summary, and whether the confirmation email was sent. It's the same decision trail as the `.log` file, live next to the conversation. The app imports the API's response types from `src/server/trace.ts`, so a change in the API's shape is caught by TypeScript in the UI too. Agent replies are rendered as React elements (never raw HTML), so model output can't inject markup into the page.
+
+Conversation history is kept in memory per conversation (lost when the server restarts). The server creates all conversation ids itself, allows one running turn per conversation at a time, limits messages to 2000 characters, and never sends internal error details to the client.
 
 Requires Node 18+ (20+ recommended, for JSON import attributes).
 
 ## Design decisions worth knowing about
 
 - **Fixed 1-second retry delay (2 attempts) instead of exponential backoff** — deliberate scope cut. Fine for a single local user hitting the API directly; a production version fielding many concurrent conversations would need backoff + jitter to avoid hammering a rate limit.
-- **Naive keyword scoring instead of embeddings** — `utils/retrieval.ts` scores articles by whether query words appear in tags/title/content. Works fine for 7 knowledge base articles, would not scale past a few dozen. `utils/embeddings.ts` already wraps the Voyage AI embeddings API as a starting point for swapping in real vector search.
+- **Naive keyword scoring instead of embeddings** — `utils/retrieval.ts` scores articles by whether query words appear in tags/title/content. Works fine for 8 knowledge base articles, would not scale past a few dozen. `utils/embeddings.ts` already wraps the Voyage AI embeddings API as a starting point for swapping in real vector search.
 - **JSON files instead of a real datastore** — `data/customers.json` and `data/knowledgeBase.json` stand in for a database. Swapping them for a real DB wouldn't change the tool interface, just the implementation behind `lookupAccount.ts` / `searchKnowledgeBase.ts`.
-- **No auth/session persistence** — single-user CLI, conversation history lives in memory for the process lifetime. A real deployment would need session storage that survives a server restart.
+- **No auth/session persistence** — conversation history lives in memory for the process lifetime (in the CLI, and per conversation in the web API). A real deployment would need session storage that survives a server restart.
 
 ## What I'd build next
 
 - Swap naive retrieval for the embeddings pipeline that's already stubbed in
 - Add an eval harness to measure how often escalation decisions are actually correct (not just whether the agent escalates, but whether it *should have*)
 - Route escalations by topic/urgency to different Slack channels instead of one webhook
-- Add a lightweight web or Slack-bot front end instead of CLI

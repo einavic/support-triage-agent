@@ -40,5 +40,11 @@
     "title": "Skin reactions and allergies",
     "tags": ["reaction", "allergy", "allergic", "rash", "irritation", "itchy", "itching", "redness", "sensitive", "breakout"],
     "content": "If a product causes irritation, redness, a rash, or any other skin reaction, stop using it immediately and rinse the area with cool water. Full ingredient lists are on every product page, and we recommend a patch test before first use. As an exception to the standard return policy, a product that caused a skin reaction can be returned for a full refund within 30 days of purchase even if it has been opened. If the reaction is severe, such as swelling of the face, lips, or eyes, or difficulty breathing, seek medical attention immediately; support will escalate severe reactions to a specialist team."
+  },
+  {
+    "id": "kb-008",
+    "title": "About LookinGood: website and contact",
+    "tags": ["about", "website", "site", "link", "url", "shop", "store", "catalog", "browse", "contact", "hours", "brand"],
+    "content": "LookinGood is a cosmetics brand selling makeup and skincare: lip products, face makeup (foundation, concealer, powder, bronzer, blush, setting spray), eye makeup (mascara, eyeliner, eyeshadow, brow pencils), skincare (cleanser, toner, serum, moisturizer, sunscreen, eye cream) and makeup brushes. The full range, with prices and ingredient lists, is on our website: https://www.lookingood.example.com. This chat assistant is available 24/7. Requests that need a team member are handled Monday to Friday, 9:00-18:00, and you can also reach the support team by email at support@lookingood.example.com."
   }
 ]

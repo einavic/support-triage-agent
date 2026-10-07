@@ -32,7 +32,9 @@ const scenarioExpectations: [string, string][] = [
   ["Can I cancel order ord-5003? I just placed it a few minutes ago.", "kb-005"],
   ["I'm michal.segal@example.com - the sunscreen I bought gave me a red, itchy rash. Can I return it even though I've opened it?", "kb-007"],
   ["is it covered under warranty?", "kb-003"],
-  ["I forgot my password", "kb-006"]
+  ["I forgot my password", "kb-006"],
+  ["ok so whats the link for the website so i could check the products?", "kb-008"],
+  ["what are your contact hours", "kb-008"]
 ];
 
 for (const [query, expectedId] of scenarioExpectations) {

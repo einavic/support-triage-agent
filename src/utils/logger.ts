@@ -3,10 +3,25 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import type { LogEntry } from "../types/index.js";
 
-const LOG_DIR = path.resolve("logs");
+// LOG_DIR can be overridden (tests write their logs to a temporary folder instead of logs/)
+const LOG_DIR = path.resolve(process.env.LOG_DIR ?? "logs");
 
 // conversationId -> file name (without extension), fixed by the conversation's first event
 const fileNames = new Map<string, string>();
+
+// Functions called with every logged event (e.g. the web server collecting a live trace for its debug panel)
+const listeners = new Set<(entry: LogEntry) => void>();
+
+/** Calls `listener` for every event logged from now on. Returns a function that stops listening. */
+export function onLogEvent(listener: (entry: LogEntry) => void): () => void {
+  listeners.add(listener);
+  return () => listeners.delete(listener);
+}
+
+/** The log file name (without extension) for a conversation, once it has logged its first event. */
+export function getLogFileName(conversationId: string): string | undefined {
+  return fileNames.get(conversationId);
+}
 
 /**
  * Logs one event for a conversation to two files in logs/, both named after the
@@ -16,6 +31,8 @@ const fileNames = new Map<string, string>();
  *  - .jsonl the full raw event (one JSON object per line), for deep debugging
  */
 export async function logEvent(entry: LogEntry): Promise<void> {
+  for (const listener of listeners) listener(entry);
+
   if (!existsSync(LOG_DIR)) {
     await mkdir(LOG_DIR, { recursive: true });
   }
